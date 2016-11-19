@@ -1,0 +1,47 @@
+{
+  "name": "sukima-rtc-entrance-controller",
+  "version": "1.0.0",
+  "description": "Entrance control server to play TRPG online sessions.",
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "engines": {
+    "node": ">=7"
+  },
+  "dependencies": {
+    "ajv": "^4.8.2",
+    "aws-sdk": "^2.7.0",
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "mkdirp": "^0.5.1"
+  },
+  "devDependencies": {
+    "babel-preset-power-assert": "^1.0.0",
+    "babel-register": "^6.18.0",
+    "eslint": "^3.9.1",
+    "eslint-config-mysticatea": "^7.0.1",
+    "eslint-plugin-mysticatea": "^4.1.0",
+    "eslint-plugin-node": "^3.0.4",
+    "eventsource": "^0.2.1",
+    "mocha": "^3.1.2",
+    "npm-run-all": "^3.1.1",
+    "nyc": "^8.4.0",
+    "opener": "^1.4.2",
+    "power-assert": "^1.4.1",
+    "rimraf": "^2.5.4"
+  },
+  "scripts": {
+    "coverage": "nyc report -r lcov && opener coverage/lcov-report/index.html",
+    "clean": "rimraf .nyc_output .test_workspace coverage",
+    "lint": "eslint lib test index.js",
+    "pretest": "run-s clean lint",
+    "start": "node index.js",
+    "test": "nyc -- mocha --harmony-async-await \"test/*.js\" --compilers js:babel-register --reporter progress --timeout 10000",
+    "watch": "npm run test -- --watch --growl"
+  },
+  "author": "Toru Nagashima",
+  "license": "GPL3",
+  "private": true
+}

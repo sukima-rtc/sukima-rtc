@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "definitions": {
+        "uniqueId": {
+            "type": "string",
+            "pattern": "^[0-9a-zA-Z]{12}$"
+        }
+    },
+    "anyOf": [
+        {
+            "type": "object",
+            "properties": {
+                "type": {"enum": ["join", "leave"]},
+                "senderId": {"$ref": "#/definitions/uniqueId"}
+            },
+            "additionalProperties": false,
+            "required": ["type", "senderId"]
+        },
+        {
+            "type": "object",
+            "properties": {
+                "type": {"enum": ["iceCandidate"]},
+                "senderId": {"$ref": "#/definitions/uniqueId"},
+                "targetId": {"$ref": "#/definitions/uniqueId"},
+                "candidate": {}
+            },
+            "additionalProperties": false,
+            "required": ["type", "senderId", "targetId", "candidate"]
+        },
+        {
+            "type": "object",
+            "properties": {
+                "type": {"enum": ["negotiationOffer", "negotiationAnswer"]},
+                "senderId": {"$ref": "#/definitions/uniqueId"},
+                "targetId": {"$ref": "#/definitions/uniqueId"},
+                "description": {}
+            },
+            "additionalProperties": false,
+            "required": ["type", "senderId", "targetId", "description"]
+        }
+    ]
+}

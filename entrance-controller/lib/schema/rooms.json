@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "definitions": {
+        "uniqueId": {
+            "type": "string",
+            "pattern": "^[0-9a-zA-Z]{12}$"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "senderId": {"$ref": "#/definitions/uniqueId"},
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+        },
+        "description": {
+            "type": "string",
+            "maxLength": 256
+        },
+        "password": {
+            "type": "string",
+            "maxLength": 64
+        }
+    },
+    "additionalProperties": false,
+    "required": ["name", "description", "password"]
+}
