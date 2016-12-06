@@ -2,4 +2,5 @@
 .test_workspace
 coverage
 node_modules
-/test.js
+npm-debug.log
+test.js
