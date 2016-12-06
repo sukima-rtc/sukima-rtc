@@ -90,7 +90,7 @@ describe("GET /rooms as events", () => {
         assert(event.rooms[1].password === undefined)
     })
 
-    it("should notify 'open' events if a room is activated.", async () => {
+    it("should notify 'active' events if a room is activated.", async () => {
         const {next, event: ready} = await subscribe()
 
         assert(ready.type === "ready")
@@ -99,7 +99,7 @@ describe("GET /rooms as events", () => {
         await subscribe(server.rooms[1].id, "b")
         const {event} = await next()
 
-        assert(event.type === "open")
+        assert(event.type === "active")
         assert(event.room.id === server.rooms[1].id)
         assert(event.room.name === server.rooms[1].name)
         assert(event.room.description === server.rooms[1].description)
@@ -107,18 +107,20 @@ describe("GET /rooms as events", () => {
         assert(event.room.password === undefined)
     })
 
-    it("should notify 'close' events if a room is inactivated.", async () => {
-        const {disconnect} = await subscribe(server.rooms[1].id, "b")
+    it("should notify 'inactive' events if a room is inactivated.", async () => {
         const {next, event: ready} = await subscribe()
-
         assert(ready.type === "ready")
-        assert(ready.rooms.length === 1)
+        assert(ready.rooms.length === 0)
+
+        const {disconnect} = await subscribe(server.rooms[1].id, "b")
+
+        assert((await next()).event.type === "active")
+        assert((await next()).event.type === "update")
 
         await disconnect()
-        await next() // this is update event
         const {event} = await next()
 
-        assert(event.type === "close")
+        assert(event.type === "inactive")
         assert(event.room.id === server.rooms[1].id)
         assert(event.room.name === server.rooms[1].name)
         assert(event.room.description === server.rooms[1].description)

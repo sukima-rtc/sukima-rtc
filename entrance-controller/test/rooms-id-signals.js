@@ -27,7 +27,7 @@ const {startServer} = require("./lib/test-server")
  */
 function makeRoomFile(id) {
     mkdirp.sync(".test_workspace/rooms")
-    fs.writeFileSync(`.test_workspace/rooms/${id}`, `{"id":"${id}","name":"yakumo","description":"the room to test","password":"179850cca4cf1c617c7b6a716d386f5305d354bab875ce05467560cf679ec7a4","salt":"0.9705369192"}`)
+    fs.writeFileSync(`.test_workspace/rooms/${id}`, `{"id":"${id}","name":"yakumo","description":"the room to test","password":"179850cca4cf1c617c7b6a716d386f5305d354bab875ce05467560cf679ec7a4","salt":"0.9705369192","createdAt":"2016-12-06T10:59:06.248Z","modifiedAt":"2016-12-06T10:59:06.248Z"}`)
 }
 
 //------------------------------------------------------------------------------

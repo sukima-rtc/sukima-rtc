@@ -201,9 +201,11 @@ module.exports = {
                             for (const s of subscribers) {
                                 s.close()
                             }
-                            require("rimraf").sync(".test_workspace")
-                            cp.send({type: "kill"})
-                            cp.on("exit", resolve2)
+                            setTimeout(() => {
+                                require("rimraf").sync(".test_workspace")
+                                cp.send({type: "kill"})
+                                cp.on("exit", resolve2)
+                            }, 100)
                         })
                     },
                 })

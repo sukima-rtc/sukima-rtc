@@ -235,6 +235,8 @@ class ServerSentEvents extends EventEmitter {
      */
     constructor({historyLimit = 1024} = {}) {
         super()
+        super.setMaxListeners(0)
+
         this.sockets = new Map()
         this.history = new EventHistory(historyLimit)
     }
