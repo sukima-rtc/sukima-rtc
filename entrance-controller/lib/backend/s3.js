@@ -11,7 +11,6 @@
 
 const path = require("path")
 const S3 = require("aws-sdk/clients/s3")
-const BackendBase = require("./backend-base")
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -20,7 +19,7 @@ const BackendBase = require("./backend-base")
 /**
  * The backend implementation by AWS S3.
  */
-class S3Backend extends BackendBase {
+class S3BackendImpl {
     /**
      * Creates a S3Backend instance.
      *
@@ -32,9 +31,7 @@ class S3Backend extends BackendBase {
      * @param {string} args.3 - The bucket ID.
      * @param {string} args.4 - The root directory in the bucket.
      */
-    constructor(create, [accessKeyId, secretAccessKey, region, bucket, root]) {
-        super()
-        this.create = create
+    constructor([accessKeyId, secretAccessKey, region, bucket, root]) {
         this.s3 = new S3({accessKeyId, secretAccessKey, region})
         this.bucket = bucket
         this.root = root
@@ -43,52 +40,47 @@ class S3Backend extends BackendBase {
     /**
      * Read data from a file.
      *
-     * @param {function} resolve - The function to become fulfilled.
-     * @param {function} reject - The function to become rejected.
      * @param {string} id - The ID to read.
+     * @param {function} cb - The function to be called if finished.
      * @returns {void}
      */
-    read(resolve, reject, id) {
-        const request = {
-            Bucket: this.bucket,
-            Key: path.join(this.root, id),
-        }
-        this.s3.getObject(request, (err, data) => {
-            if (err == null) {
-                resolve(data.Body.toString())
+    get(id, cb) {
+        this.s3.getObject(
+            {
+                Bucket: this.bucket,
+                Key: path.join(this.root, id),
+            },
+            (err, data) => {
+                if (err == null) {
+                    cb(null, data.Body.toString())
+                }
+                else if (err.statusCode === 404) {
+                    cb(null, null)
+                }
+                else {
+                    cb(err)
+                }
             }
-            else if (err.statusCode === 404) {
-                resolve(null)
-            }
-            else {
-                reject(err)
-            }
-        })
+        )
     }
 
     /**
      * Write data to a file.
      *
-     * @param {function} resolve - The function to become fulfilled.
-     * @param {function} reject - The function to become rejected.
      * @param {string} id - The ID to write.
-     * @param {string} body - The content to write.
+     * @param {string} data - The content to be written.
+     * @param {function} cb - The function to be called if finished.
      * @returns {void}
      */
-    write(resolve, reject, id, body) {
-        const request = {
-            Bucket: this.bucket,
-            Key: path.join(this.root, id),
-            Body: body,
-        }
-        this.s3.putObject(request, (err) => {
-            if (err == null) {
-                resolve()
-            }
-            else {
-                reject(err)
-            }
-        })
+    set(id, data, cb) {
+        this.s3.putObject(
+            {
+                Bucket: this.bucket,
+                Key: path.join(this.root, id),
+                Body: data,
+            },
+            cb
+        )
     }
 }
 
@@ -96,4 +88,4 @@ class S3Backend extends BackendBase {
 // Exports
 //------------------------------------------------------------------------------
 
-module.exports = S3Backend
+module.exports = S3BackendImpl

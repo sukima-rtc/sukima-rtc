@@ -12,72 +12,59 @@
 const fs = require("fs")
 const path = require("path")
 const mkdirp = require("mkdirp")
-const BackendBase = require("./backend-base")
 
 //------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
 
 /**
- * The backend implementation by file system.
+ * The backend implementation which uses file system.
  */
-class FsBackend extends BackendBase {
+class FsBackendImpl {
     /**
-     * Creates a FsBackend instance.
+     * Creates a FsBackendImpl instance.
      *
-     * @param {function} create - The function to create model instance.
      * @param {string[]} args - The arguments.
      * @param {string} args.0 - The root directory to save.
      */
-    constructor(create, [root]) {
-        super()
-        this.create = create
+    constructor([root]) {
         this.root = root
+        this.ready = new Promise(resolve => {
+            mkdirp(root, resolve)
+        })
     }
 
     /**
      * Read data from a file.
      *
-     * @param {function} resolve - The function to become fulfilled.
-     * @param {function} reject - The function to become rejected.
      * @param {string} id - The ID to read.
+     * @param {function} cb - The function to be called if finished.
      * @returns {void}
      */
-    read(resolve, reject, id) {
-        fs.readFile(path.join(this.root, id), "utf8", (err, body) => {
-            if (err == null || err.code === "ENOENT") {
-                resolve(body || null)
-            }
-            else {
-                reject(err)
-            }
+    get(id, cb) {
+        this.ready.then(() => {
+            fs.readFile(path.join(this.root, id), "utf8", (err, body) => {
+                if (err != null && err.code === "ENOENT") {
+                    cb(null, null)
+                }
+                else {
+                    cb(err, body)
+                }
+            })
         })
     }
 
     /**
      * Write data to a file.
      *
-     * @param {function} resolve - The function to become fulfilled.
-     * @param {function} reject - The function to become rejected.
      * @param {string} id - The ID to write.
-     * @param {string} body - The content to write.
+     * @param {string} data - The content to be written.
+     * @param {function} cb - The function to be called if finished.
      * @returns {void}
      */
-    write(resolve, reject, id, body) {
-        mkdirp(this.root, (dirError) => {
-            if (dirError != null) {
-                reject(dirError)
-                return
-            }
-
-            fs.writeFile(path.join(this.root, id), body, (fileError) => {
-                if (fileError != null) {
-                    reject(fileError)
-                    return
-                }
-
-                resolve()
-            })
+    set(id, data, cb) {
+        this.ready.then(() => {
+            fs.writeFile(path.join(this.root, id), data, cb)
         })
     }
 }
@@ -86,4 +73,4 @@ class FsBackend extends BackendBase {
 // Exports
 //------------------------------------------------------------------------------
 
-module.exports = FsBackend
+module.exports = FsBackendImpl
