@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>スキマ RTC</title>
+    <link rel="stylesheet" href="//code.getmdl.io/1.2.1/material.deep_purple-red.min.css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="index.css">
+    <script async src="//code.getmdl.io/1.2.1/material.min.js"></script>
+</head>
+<body>
+    <div id="mainArea">
+        <div v-if="false" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" style="position:fixed; width:100%;"></div>
+    </div>
+
+    <script id="mainScript" src="index.js"></script>
+    <script><!--
+        if (!window.sukimaRTCLoaded) {
+            window.mainArea.innerHTML = "\
+このアプリケーションを使用するには以下の標準仕様に準拠したブラウザが必要です。<br>\
+<ul>\
+    <li><a href=\"//www.ecma-international.org/ecma-262/6.0/\">ECMAScript 2015</a>\
+    <li><a href=\"//www.w3.org/TR/webrtc/\">WebRTC 1.0: Real-time Communication Between Browsers</a>\
+    <li><a href=\"//www.w3.org/TR/eventsource/\">Server-Sent Events</a>\
+</ul>\
+最新の Google Chrome または Mozilla Firefox 等をご利用ください。\
+"
+        }
+    //--></script>
+    <noscript>
+        これはWebアプリケーションです。<br>
+        ご利用になるにはJavaScriptを有効にする必要があります。
+    </noscript>
+</body>
+</html>

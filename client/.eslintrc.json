@@ -1,0 +1,10 @@
+{
+    "extends": ["mysticatea", "mysticatea/node"],
+    "rules": {
+        "new-cap": ["error", {
+            "capIsNewExceptions": ["EventTargetShim"]
+        }],
+        "node/no-unsupported-features": "off"
+    },
+    "root": true
+}

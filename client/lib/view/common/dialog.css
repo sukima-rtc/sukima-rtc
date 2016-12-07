@@ -1,0 +1,29 @@
+/**
+ * @author Toru Nagashima <https://github.com/mysticatea>
+ * @copyright 2016 Toru Nagashima. All rights reserved.
+ * See LICENSE file in root directory for full license.
+ */
+
+.sukima-dialog {
+    display: flex;
+    align-items: stretch;
+    flex-basis: fill;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+}
+
+.sukima-dialog > .sukima-dialog__title {
+    flex-shrink: 1;
+}
+
+.sukima-dialog > .sukima-dialog__content {
+    flex-grow: 1;
+    overflow-y: scroll;
+}
+
+.sukima-dialog > .sukima-dialog__actions {
+    flex-shrink: 1;
+}

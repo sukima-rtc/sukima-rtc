@@ -1,0 +1,60 @@
+{
+  "name": "sukima-rtc-client",
+  "version": "1.0.0",
+  "description": "Web Application to play TRPG online sessions.",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=7"
+  },
+  "dependencies": {
+    "eaw": "^0.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^6.0.49",
+    "aliasify": "^2.1.0",
+    "babel-helper-vue-jsx-merge-props": "^2.0.2",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-async-to-generator": "^6.16.0",
+    "babel-plugin-transform-vue-jsx": "^3.2.0",
+    "babel-preset-power-assert": "^1.0.0",
+    "babel-register": "^6.18.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.1",
+    "cross-env": "^3.1.3",
+    "envify": "^3.4.1",
+    "eslint": "^3.9.1",
+    "eslint-config-mysticatea": "^7.0.1",
+    "eslint-plugin-mysticatea": "^4.1.0",
+    "eslint-plugin-node": "^3.0.4",
+    "eslint-plugin-react": "^6.7.1",
+    "event-target-shim": "^1.1.1",
+    "express": "^4.14.0",
+    "glob": "^7.1.1",
+    "mocha": "^3.1.2",
+    "npm-run-all": "^3.1.1",
+    "nyc": "^8.4.0",
+    "opener": "^1.4.2",
+    "power-assert": "^1.4.1",
+    "rimraf": "^2.5.4",
+    "vue": "^2.0.7",
+    "vue-router": "^2.0.3",
+    "vueify": "^9.3.0",
+    "vuex": "^2.0.0"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production browserify -t [ babelify --plugins transform-async-to-generator --no-babelrc ] -t vueify -e lib/index.js -o dist/index.js",
+    "coverage": "nyc report -r lcov && opener coverage/lcov-report/index.html",
+    "clean": "rimraf .nyc_output .test_workspace coverage",
+    "lint": "eslint lib test index.js",
+    "pretest": "run-s clean lint",
+    "start": "node index.js",
+    "test": "nyc -- mocha --harmony-async-await \"test/*.js\" --compilers js:babel-register --reporter progress --timeout 10000",
+    "watch": "npm run test -- --watch --growl"
+  },
+  "keywords": [],
+  "author": "Toru Nagashima",
+  "license": "GPL3",
+  "private": true
+}

@@ -1,0 +1,26 @@
+/**
+ * @author Toru Nagashima <https://github.com/mysticatea>
+ * @copyright 2016 Toru Nagashima. All rights reserved.
+ * See LICENSE file in root directory for full license.
+ */
+
+@font-face {
+    font-family: SourceHanCodeJP;
+    font-style: normal;
+    font-weight: 400;
+    src: local("Source Han Code JP"),
+         local("源ノ角ゴシック Code JP"),
+         local("SourceHanCodeJP-Normal"),
+         url(SourceHanCodeJP-Normal.otf) format("opentype");
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #D8D4E0;
+    color: #282430;
+    font-family: SourceHanCodeJP;
+}

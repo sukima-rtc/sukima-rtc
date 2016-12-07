@@ -1,0 +1,5 @@
+{
+    "only": "/test/*",
+    "presets": ["power-assert"],
+    "sourceMaps": "inline"
+}
