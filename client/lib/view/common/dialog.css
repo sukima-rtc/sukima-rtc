@@ -4,10 +4,9 @@
  * See LICENSE file in root directory for full license.
  */
 
-.sukima-dialog {
+.mdl-dialog {
     display: flex;
     align-items: stretch;
-    flex-basis: fill;
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: space-between;
@@ -15,15 +14,19 @@
     border-radius: 8px;
 }
 
-.sukima-dialog > .sukima-dialog__title {
+.mdl-dialog > .mdl-dialog__title {
     flex-shrink: 1;
 }
 
-.sukima-dialog > .sukima-dialog__content {
+.mdl-dialog > .mdl-dialog__content {
     flex-grow: 1;
     overflow-y: scroll;
 }
 
-.sukima-dialog > .sukima-dialog__actions {
+.mdl-dialog > .mdl-dialog__actions {
     flex-shrink: 1;
+}
+
+.mdl-dialog > .mdl-dialog__actions button {
+    margin-left: 4px;
 }

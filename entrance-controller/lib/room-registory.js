@@ -47,11 +47,12 @@ class RoomRegistory {
     /**
      * Iterates rooms that players are in the room.
      *
+     * @param {string[]} knownIds - The IDs which should include always.
      * @returns {IterableIterator<Room>} The iterator.
      */
-    * getRooms() {
+    * getRooms(knownIds = new Set()) {
         for (const room of this.rooms.values()) {
-            if (room.signals.hasSocket()) {
+            if (room.signals.hasSocket() || knownIds.has(room.id)) {
                 yield room.toPublicJSON()
             }
         }

@@ -172,11 +172,12 @@ module.exports = {
          */
         function authRoom(req, res, next) {
             const room = req.room
+            const password = Object.keys(req.query)[0]
 
-            if (!room.authenticate(req.query.password || "")) {
+            if (!room.authenticate(password || "")) {
                 authBlocker.countUp(req.ip)
                 res.set("WWW-Authenticate", `X-Password realm="${room.id}"`)
-                next(HttpError.new(401, "'password' was wrong."))
+                next(HttpError.new(401, "this password was wrong."))
             }
             else {
                 authBlocker.reset(req.ip)
@@ -272,8 +273,12 @@ module.exports = {
 
         // GET /rooms
         router.get("/", (req, res) => {
+            const knownIds = req.query.with
+                 ? new Set(req.query.with.split(","))
+                 : new Set()
+
             if (req.accepts("application/json")) {
-                res.json(Array.from(rooms.getRooms()))
+                res.json(Array.from(rooms.getRooms(knownIds)))
                 return
             }
             if (req.accepts("text/event-stream")) {
@@ -285,7 +290,7 @@ module.exports = {
                         lastEventId,
                         ready(event) {
                             // Return rooms in the ready event.
-                            event.rooms = Array.from(rooms.getRooms())
+                            event.rooms = Array.from(rooms.getRooms(knownIds))
                             return event
                         },
                     }

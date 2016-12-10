@@ -9,10 +9,15 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const {ENV} = require("./config")
+const {ENV} = require("../config")
+const playerRegistory = require("./player-registory")
 const roomRegistory = require("./room-registory")
 
+//------------------------------------------------------------------------------
+// Exports
+//------------------------------------------------------------------------------
+
 module.exports = {
-    modules: {roomRegistory},
+    modules: {playerRegistory, roomRegistory},
     strict: ENV !== "production",
 }

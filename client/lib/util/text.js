@@ -6,15 +6,19 @@
 "use strict"
 
 //------------------------------------------------------------------------------
-// Requirements and Exports
+// Requirements
+//------------------------------------------------------------------------------
+
+const Hash = require("hash.js")
+
+//------------------------------------------------------------------------------
+// Exports
 //------------------------------------------------------------------------------
 
 module.exports = {
-    Button: require("./button"),
-    Dialog: require("./dialog"),
-    Icon: require("./icon"),
-    MdlUtils: require("./mdl-utils"),
-    ProgressBar: require("./progress-bar"),
-    Snackbar: require("./snackbar"),
-    TextField: require("./text-field"),
+    sha256(text) {
+        return Hash.sha256()
+            .update(typeof text === "string" ? text : "")
+            .digest("hex")
+    },
 }

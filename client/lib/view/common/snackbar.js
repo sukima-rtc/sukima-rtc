@@ -16,22 +16,27 @@ const MdlUtils = require("./mdl-utils")
 //------------------------------------------------------------------------------
 
 module.exports = {
-    name: "ProgressBar",
+    name: "Snackbar",
 
     mixins: [MdlUtils.mixin()],
-    props: {indeterminate: {type: Boolean, default: false}},
-
-    computed: {
-        cssClasses() {
-            return {
-                "mdl-progress": true,
-                "mdl-js-progress": true,
-                "mdl-progress__indeterminate": this.indeterminate,
-            }
-        },
+    props: {
+        icon: {type: String, default: undefined},
+        text: {type: String, default: undefined},
     },
 
     render(h) {
-        return <div class={this.cssClasses} style="width:100%"></div>
+        return <div class="mdl-snackbar mdl-js-snackbar">
+            <div class="mdl-snackbar__text"></div>
+            <button class="mdl-snackbar__action" type="button"></button>
+        </div>
+    },
+
+    methods: {
+        show(message) {
+            this.$el.MaterialSnackbar.showSnackbar({
+                message,
+                timeout: 4000,
+            })
+        },
     },
 }

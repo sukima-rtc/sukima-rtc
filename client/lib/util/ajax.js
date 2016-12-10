@@ -88,12 +88,10 @@ module.exports = {
 
             xhr.open(method, path, true)
             xhr.setRequestHeader("Accept", "application/json")
-            xhr.setRequestHeader("Accept-Charset", "UTF-8")
             if (password) {
                 xhr.setRequestHeader("Authorization", `Bearer ${password}`)
             }
             if (dataText) {
-                xhr.setRequestHeader("Content-Length", byteLength(dataText))
                 xhr.setRequestHeader("Content-Type", "application/json")
             }
             xhr.send(dataText)

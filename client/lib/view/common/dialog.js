@@ -6,30 +6,54 @@
 "use strict"
 
 //------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
+/*globals window */
+
+//------------------------------------------------------------------------------
 // Exports
 //------------------------------------------------------------------------------
 
 module.exports = {
-    functional: true,
+    name: "Dialog",
 
-    render(h, context) {
-        const s = context.slots()
-        return <div class="mdl-dialog sukima-dialog">
-            <div
-                class="mdl-dialog__title sukima-dialog__title"
-                v-show={Boolean(s.title)}
-            >{
-                s.title
-            }</div>
-            <div class="mdl-dialog__content sukima-dialog__content">{
-                s.default
-            }</div>
-            <div
-                class="mdl-dialog__actions sukima-dialog__actions"
-                v-show={Boolean(s.actions)}
-            >{
-                s.actions
-            }</div>
+    render(h) {
+        return <div class="mdl-dialog">
+            <div class="mdl-dialog__title" v-show={Boolean(this.$slots.title)}>
+                {this.$slots.title}
+            </div>
+            <div class="mdl-dialog__content">
+                {this.$slots.default}
+            </div>
+            <div class="mdl-dialog__actions" v-show={Boolean(this.$slots.actions)}>
+                {this.$slots.actions}
+            </div>
         </div>
+    },
+
+    methods: {
+        handleKeys(event) {
+            if (event.keyCode === 13) {
+                const button = this.$el.querySelector(".mdl-dialog__actions button.mdl-button--primary")
+                if (button) {
+                    button.click()
+                }
+            }
+            else if (event.keyCode === 27) {
+                const button = this.$el.querySelector(".mdl-dialog__actions button:not(.mdl-button--primary)")
+                if (button) {
+                    button.click()
+                }
+            }
+        },
+    },
+
+    mounted() {
+        window.addEventListener("keyup", this.handleKeys)
+    },
+
+    beforeDestroy() {
+        window.removeEventListener("keyup", this.handleKeys)
     },
 }

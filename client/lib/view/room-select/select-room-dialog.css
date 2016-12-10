@@ -1,0 +1,26 @@
+/**
+ * @author Toru Nagashima <https://github.com/mysticatea>
+ * @copyright 2016 Toru Nagashima. All rights reserved.
+ * See LICENSE file in root directory for full license.
+ */
+
+.sukima-select-room-dialog__table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.sukima-select-room-dialog__header >th:nth-child(1) {
+    width: 250px;
+}
+.sukima-select-room-dialog__header >th:nth-child(3) {
+    width: 75px;
+}
+
+.sukima-select-room-dialog__row {
+    cursor: pointer;
+}
+
+.sukima-select-room-dialog__row >td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

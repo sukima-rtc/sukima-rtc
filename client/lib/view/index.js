@@ -6,13 +6,12 @@
 "use strict"
 
 //------------------------------------------------------------------------------
-// Requirements
+// Requirements and Exports
 //------------------------------------------------------------------------------
 
-const Application = require("./application")
-
-//------------------------------------------------------------------------------
-// Exports
-//------------------------------------------------------------------------------
-
-module.exports = {Application}
+module.exports = {
+    Application: require("./application"),
+    LoginRoomDialog: require("./room-select/login-room-dialog"),
+    NewRoomDialog: require("./room-select/new-room-dialog"),
+    SelectRoomDialog: require("./room-select/select-room-dialog"),
+}

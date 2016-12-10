@@ -10,11 +10,6 @@
 //------------------------------------------------------------------------------
 
 module.exports = {
-    Button: require("./button"),
-    Dialog: require("./dialog"),
-    Icon: require("./icon"),
-    MdlUtils: require("./mdl-utils"),
-    ProgressBar: require("./progress-bar"),
-    Snackbar: require("./snackbar"),
-    TextField: require("./text-field"),
+    Ajax: require("./ajax"),
+    Text: require("./text"),
 }

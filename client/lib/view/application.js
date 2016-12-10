@@ -6,17 +6,34 @@
 "use strict"
 
 //------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
+const {Snackbar} = require("./common")
+
+//------------------------------------------------------------------------------
+// Helpers
+//------------------------------------------------------------------------------
+
+const PATH_PATTERN = /^\/rooms\/[0-9a-zA-Z]{12}$/
+
+//------------------------------------------------------------------------------
 // Exports
 //------------------------------------------------------------------------------
 
 module.exports = {
+    name: "SukimaApplication",
+
     data() {
         return {}
     },
 
     computed: {
+        signalingChannel() {
+            return this.$store.state.playerRegistory.signals
+        },
         dialogShown() {
-            return this.$route.params.channel == null
+            return this.signalingChannel == null
         },
     },
 
@@ -41,6 +58,29 @@ module.exports = {
             <div v-show="dialogShown" class="sukima-application__dialog-container">
                 <router-view></router-view>
             </div>
+            <Snackbar ref="errorSnackbar" class="sukima-application__error-snackbar"/>
         </div>
+    },
+
+    methods: {
+        $showError(message) {
+            this.$refs.errorSnackbar.show(message)
+        },
+    },
+
+    created() {
+        this.$router.beforeEach((to, from, next) => {
+            if (PATH_PATTERN.test(to.path) && this.signalingChannel == null) {
+                next(`${to.path}/login`)
+            }
+            else {
+                next()
+            }
+        })
+        this.$router.afterEach((to, from) => {
+            if (from === this.$route) {
+                this.$store.dispatch("disconnectPlayerRegistory")
+            }
+        })
     },
 }
