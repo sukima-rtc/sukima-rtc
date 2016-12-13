@@ -45,17 +45,36 @@ class RoomRegistory {
     }
 
     /**
-     * Iterates rooms that players are in the room.
+     * Gets the public JSON data of rooms that players are in the room.
      *
-     * @param {string[]} knownIds - The IDs which should include always.
-     * @returns {IterableIterator<Room>} The iterator.
+     * @param {string[]} knownIds - The IDs which should include always. Those
+     *  rooms have to be in the `this.rooms` map.
+     * @returns {Promise<object[]>} The public JSON data of active rooms.
      */
-    * getRooms(knownIds = new Set()) {
+    getActiveRoomData(knownIds = []) {
+        const set = new Set(knownIds)
+        const retv = []
+
         for (const room of this.rooms.values()) {
-            if (room.signals.hasSocket() || knownIds.has(room.id)) {
-                yield room.toPublicJSON()
+            if (room.signals.hasSocket() || set.has(room.id)) {
+                set.delete(room.id)
+                retv.push(room.toPublicJSON())
             }
         }
+
+        let promise = Promise.resolve(retv)
+        for (const knownId of set.values()) {
+            promise = promise
+                .then(() => this.getRoomById(knownId))
+                .then(room => {
+                    if (room != null) {
+                        retv.push(room.toPublicJSON())
+                    }
+                    return retv
+                })
+        }
+
+        return promise
     }
 
     /**
@@ -69,7 +88,7 @@ class RoomRegistory {
             return Promise.resolve(this.rooms.get(id))
         }
         if (!IdGenerator.isValidId(id)) {
-            return HttpError.reject(404)
+            return Promise.resolve(null)
         }
 
         // Restore the room from the backend.

@@ -272,33 +272,42 @@ module.exports = {
         //----------------------------------------------------------------------
 
         // GET /rooms
-        router.get("/", (req, res) => {
+        router.get("/", (req, res, next) => {
             const knownIds = req.query.with
-                 ? new Set(req.query.with.split(","))
-                 : new Set()
+                 ? req.query.with.split(",")
+                 : []
+            const isJson = req.accepts("application/json")
+            const isStream = req.accepts("text/event-stream")
 
-            if (req.accepts("application/json")) {
-                res.json(Array.from(rooms.getRooms(knownIds)))
+            if (!isJson && !isStream) {
+                res.status(406).end()
                 return
             }
-            if (req.accepts("text/event-stream")) {
-                const lastEventId = req.get("Last-Event-ID")
 
-                rooms.notifications.registerSocket(
-                    res,
-                    {
-                        lastEventId,
-                        ready(event) {
-                            // Return rooms in the ready event.
-                            event.rooms = Array.from(rooms.getRooms(knownIds))
-                            return event
-                        },
+            rooms.getActiveRoomData(knownIds).then(
+                (activeRooms) => {
+                    if (isJson) {
+                        res.json(activeRooms)
+                        return
                     }
-                )
-                return
-            }
+                    if (isStream) {
+                        const lastEventId = req.get("Last-Event-ID")
 
-            res.status(406).end()
+                        rooms.notifications.registerSocket(
+                            res,
+                            {
+                                lastEventId,
+                                ready(event) {
+                                    event.rooms = activeRooms
+                                    return event
+                                },
+                            }
+                        )
+                        return
+                    }
+                },
+                next
+            )
         })
 
         // POST /rooms
