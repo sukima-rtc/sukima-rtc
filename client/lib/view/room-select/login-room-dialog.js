@@ -9,6 +9,8 @@
 // Requirements
 //------------------------------------------------------------------------------
 
+/*globals localStorage */
+
 const {Button, Dialog, Icon, ProgressBar, TextField} = require("../common")
 
 //------------------------------------------------------------------------------
@@ -30,12 +32,18 @@ module.exports = {
         roomId() {
             return this.$route.params.id
         },
+
         room() {
             const {rooms} = this.$store.state.roomRegistory
             return rooms.find(room => room.id === this.roomId) || {}
         },
+
         buttonDisabled() {
             return !this.playerName
+        },
+
+        playerNameKey() {
+            return `${this.roomId}/playerName`
         },
     },
 
@@ -48,7 +56,7 @@ module.exports = {
             <hr/>
             <div style="text-align: center">
                 <TextField
-                    autofocus
+                    autofocus={!this.playerName}
                     disabled={this.busy}
                     float
                     label="プレイヤー名"
@@ -59,6 +67,7 @@ module.exports = {
                     onInput={this.handlePlayerNameInput}
                 /><br/>
                 <TextField
+                    autofocus={Boolean(this.playerName)}
                     disabled={this.busy}
                     float
                     label="入室パスワード"
@@ -108,6 +117,7 @@ module.exports = {
                     password: this.password,
                 })
 
+                localStorage.setItem(this.playerNameKey, this.playerName)
                 this.$router.replace(".")
             }
             catch (_err) {
@@ -132,6 +142,7 @@ module.exports = {
     },
 
     mounted() {
+        this.playerName = localStorage.getItem(this.playerNameKey) || ""
         this.$store.dispatch("connectRoomRegistory")
     },
 }

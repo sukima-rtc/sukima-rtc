@@ -9,6 +9,8 @@
 // Requirements
 //------------------------------------------------------------------------------
 
+/*globals localStorage */
+
 const {Button, Dialog, Icon, ProgressBar, TextField} = require("../common")
 
 //------------------------------------------------------------------------------
@@ -123,6 +125,8 @@ module.exports = {
                     playerName: this.playerName,
                     password: this.password,
                 })
+
+                localStorage.setItem(`${room.id}/playerName`, this.playerName)
                 this.$router.replace(`${room.id}`)
             }
             catch (_err) {
