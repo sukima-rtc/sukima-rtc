@@ -1,39 +1,10 @@
 {
+    "parser": "vue-eslint-parser",
     "parserOptions": {
-        "ecmaVersion": 2017,
-        "ecmaFeatures": {
-            "jsx": true
-        }
+        "ecmaVersion": 2017
     },
-    "plugins": [
-        "react"
-    ],
     "rules": {
-        "react/jsx-boolean-value": ["error", "never"],
-        "react/jsx-closing-bracket-location": ["error", "line-aligned"],
-        "react/jsx-curly-spacing": ["error", "never"],
-        "react/jsx-equals-spacing": ["error", "never"],
-        "react/jsx-first-prop-new-line": ["error", "multiline"],
-        "react/jsx-indent": ["error", 4],
-        "react/jsx-indent-props": ["error", 4],
-        "react/jsx-key": "error",
-        "react/jsx-no-bind": "error",
-        "react/jsx-no-comment-textnodes": "error",
-        "react/jsx-no-duplicate-props": "error",
-        "react/jsx-no-undef": "error",
-        "react/jsx-pascal-case": "error",
-        "react/jsx-space-before-closing": ["error", "never"],
-        "react/jsx-tag-spacing": ["error", {
-            "closingSlash": "never",
-            "beforeSelfClosing": "never",
-            "afterOpening": "never"
-        }],
-        "react/jsx-uses-react": "error",
-        "react/jsx-uses-vars": "error"
-    },
-    "settings": {
-        "react": {
-            "pragma": "h"
-        }
+        // Those rules are not working on .vue files.
+        "lines-around-directive": "off"
     }
 }

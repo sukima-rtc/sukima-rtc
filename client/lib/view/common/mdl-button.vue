@@ -1,25 +1,27 @@
-/**
- * @author Toru Nagashima <https://github.com/mysticatea>
- * @copyright 2016 Toru Nagashima. All rights reserved.
- * See LICENSE file in root directory for full license.
- */
+<!--
+@author Toru Nagashima
+@copyright 2016 Toru Nagashima. All rights reserved.
+See LICENSE file in root directory for full license.
+-->
+
+<template>
+    <button :class="cssClasses" :disabled="disabled" :tabindex="tabIndex" @click="handleClick">
+        <mdl-icon v-if="icon" :kind="icon"></mdl-icon>
+        <slot></slot>
+    </button>
+</template>
+
+<script>
 "use strict"
 
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
-const Icon = require("./icon")
 const MdlUtils = require("./mdl-utils")
 
-//------------------------------------------------------------------------------
-// Exports
-//------------------------------------------------------------------------------
-
 module.exports = {
-    name: "Button",
-
+    components: { //
+        "mdl-icon": require("./mdl-icon.vue"),
+    },
     mixins: [MdlUtils.mixin()],
+
     props: {
         accent: {type: Boolean, default: false},
         colored: {type: Boolean, default: false},
@@ -49,21 +51,14 @@ module.exports = {
         },
     },
 
-    render(h) {
-        return <button
-            class={this.cssClasses}
-            disabled={this.disabled}
-            tabindex={this.tabIndex}
-            onClick={this.handleClick}
-        >
-            {this.icon ? <Icon kind={this.icon}/> : null}
-            {this.$slots.default}
-        </button>
-    },
-
     methods: {
         handleClick(event) {
             this.$emit("click", event)
         },
+
+        click() {
+            this.$el.click()
+        },
     },
 }
+</script>

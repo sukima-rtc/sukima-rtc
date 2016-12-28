@@ -9,15 +9,23 @@
 // Requirements
 //------------------------------------------------------------------------------
 
+const Vue = require("vue")
+const VueX = require("vuex")
 const {ENV} = require("../config")
 const playerRegistory = require("./player-registory")
 const roomRegistory = require("./room-registory")
+
+Vue.use(VueX)
 
 //------------------------------------------------------------------------------
 // Exports
 //------------------------------------------------------------------------------
 
 module.exports = {
-    modules: {playerRegistory, roomRegistory},
-    strict: ENV !== "production",
+    createStore() {
+        return new VueX.Store({
+            modules: {playerRegistory, roomRegistory},
+            strict: ENV !== "production",
+        })
+    },
 }

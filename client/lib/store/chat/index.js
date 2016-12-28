@@ -9,29 +9,19 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-const MdlUtils = require("./mdl-utils")
+//------------------------------------------------------------------------------
+// Helpers
+//------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 // Exports
 //------------------------------------------------------------------------------
 
 module.exports = {
-    name: "ProgressBar",
+    state: {},
+    mutations: {},
+    actions: {},
 
-    mixins: [MdlUtils.mixin()],
-    props: {indeterminate: {type: Boolean, default: false}},
-
-    computed: {
-        cssClasses() {
-            return {
-                "mdl-progress": true,
-                "mdl-js-progress": true,
-                "mdl-progress__indeterminate": this.indeterminate,
-            }
-        },
-    },
-
-    render(h) {
-        return <div class={this.cssClasses} style="width:100%"></div>
+    initialize(store) {
     },
 }
